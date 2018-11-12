@@ -42,6 +42,8 @@ map <- map[!map$STATEFP %in% c("02", "15", "72", "66", "78", "60", "69",
 map <- map[!map$STATEFP %in% c("81", "84", "86", "87", "89", "71", "76",
                                "95", "79"),]
 
+centroids <- getSpPPolygonsLabptSlots(map)
+
 strong_presence <- merged[log(weight1)>5]
 
 companies_per_geoid <- merged[,.(number=.N,presence=sum(weight1,na.rm = T)),by=.(GEOID)]
@@ -55,28 +57,17 @@ countyList <- leafmap@data$NAME
 
 # list of health attributes
 healthList <- colnames(health)
+index_n <- which(lapply(health, typeof)=="character")
+healthList <- healthList[-index_n]
 index <- which(grepl("95% CI|Quartile", healthList))
 healthList <- healthList[-index]
 
+
 # list of census attributes
 censusList <- colnames(census)
+index_n <- which(lapply(census, typeof)=="character")
+censusList <- censusList[-index_n]
 index <- which(grepl("90% CI", censusList))
 censusList <- censusList[-index]
 
-# pal1 <- colorQuantile("YlOrRd", NULL)
-# pal2 <- colorFactor("Blues", NULL)
-# centroids <- getSpPPolygonsLabptSlots(map)
-# 
-# # Render final map in leaflet
-# leaflet(data = leafmap) %>% addTiles() %>%
-#   addPolygons(fillColor = ~pal1(`Poverty Percent, All Ages`), 
-#               fillOpacity = 0.8, 
-#               color = "#BDBDC3", 
-#               weight = 1,
-#               popup = popup_dat) %>%
-#   addCircleMarkers(lng = ~centroids[,1],
-#                    lat = ~centroids[,2],
-#                    color = ~pal2(presence),
-#                    fillOpacity = 0.5,
-#                    popup = popup_dat)
 

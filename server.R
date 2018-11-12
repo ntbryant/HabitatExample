@@ -17,14 +17,6 @@ shinyServer(function(input, output) {
     
     merged <- merged[,c(healthList), with=FALSE]
     
-    # ifelse(class(leafmap[,input$censusInfo)=="numeric",
-    #        pal1 <- colorQuantile("YlOrRd", NULL),
-    #        pal1 <- colorFactor("YlOrRd", NULL))
-    # 
-    # ifelse(class(input$healthInfo)=="numeric",
-    #        pal2 <- colorQuantile("YlOrRd", NULL),
-    #        pal2 <- colorFactor("YlOrRd", NULL))
-    
     leaflet(data = leafmap) %>% addTiles() %>%
       addPolygons(data = leafmap,
                   fillColor = ~rainbow_hcl(10), 
