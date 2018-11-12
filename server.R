@@ -42,7 +42,7 @@ shinyServer(function(input, output) {
     
   })
   
-  output$table = renderDataTable({
+  output$dataTable = renderDataTable({
     merged
   })
   
