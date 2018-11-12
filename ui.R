@@ -4,7 +4,7 @@ library(shinydashboard)
 library(dtplyr)
 
 ui <- dashboardPage(
-  dashboardHeader(title = "Neighborhood Revitalization Dashboard"),
+  dashboardHeader(title = "NR Dashboard"),
   dashboardSidebar(
     sidebarMenu(
       menuItem("Map", tabName = "map", icon = icon("map")),
@@ -27,13 +27,14 @@ ui <- dashboardPage(
                        selectInput(inputId = "censusInfo",
                                    "Select Census Info to Display",
                                    choices=censusList,
-                                   selected=censusList[1])),
+                                   selected="`Poverty Estimate, All Ages`")),
                 column(width = 3,
                        selectInput(inputId = "healthInfo",
                                    "Select Health Info to Display",
                                    choices=healthList,
                                    selected=healthList[1]))
               ),
+              tags$style(type = "text/css", "#habitatMap {height: calc(100vh - 200px) !important;}"),
               leafletOutput("habitatMap")
       ),
                 
