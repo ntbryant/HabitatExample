@@ -22,7 +22,7 @@ ui <- dashboardPage(
                        selectInput(inputId = "County",
                                    "Select County",
                                    choices=countyList,
-                                   selected=countyList[1])),
+                                   selected="Multnomah")),
                 column(width = 3,
                        selectInput(inputId = "censusInfo",
                                    "Select Census Info to Display",

@@ -26,8 +26,8 @@ census[,GEOID:=paste0(`State FIPS Code`,`County FIPS Code`)]
 health[,GEOID:=FIPS]
 
 # merging data
-company_scores <- merge(company[,.(GEOID,id,weight1)],scores,by="id")
-tables <- list(company_scores, census, health)
+# company_scores <- merge(company[,.(GEOID,id,weight1)],scores,by="id")
+tables <- list(census, health)
 lapply(tables, function(i) setkey(i, GEOID))
 merged <- Reduce(function(...) merge(..., all = T), tables)
 
@@ -44,13 +44,13 @@ map <- map[!map$STATEFP %in% c("81", "84", "86", "87", "89", "71", "76",
 
 centroids <- getSpPPolygonsLabptSlots(map)
 
-strong_presence <- merged[log(weight1)>5]
+# strong_presence <- merged[log(weight1)>5]
+# 
+# companies_per_geoid <- merged[,.(number=.N,presence=sum(weight1,na.rm = T)),by=.(GEOID)]
+# 
+# merged_map <- merge(census,companies_per_geoid,by="GEOID")
 
-companies_per_geoid <- merged[,.(number=.N,presence=sum(weight1,na.rm = T)),by=.(GEOID)]
-
-merged_map <- merge(census,companies_per_geoid,by="GEOID")
-
-leafmap <- sp::merge(map, merged_map, by=c("GEOID"))
+leafmap <- sp::merge(map, merged, by="GEOID")
 
 # list of county names
 countyList <- leafmap@data$NAME
@@ -61,7 +61,9 @@ index_n <- which(lapply(health, typeof)=="character")
 healthList <- healthList[-index_n]
 index <- which(grepl("95% CI|Quartile", healthList))
 healthList <- healthList[-index]
-
+health[, lapply(.SD, as.numeric), .SDcols=healthList]
+healthList <- healthList[-1]
+health <- na.omit(health)
 
 # list of census attributes
 censusList <- colnames(census)

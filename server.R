@@ -17,18 +17,27 @@ shinyServer(function(input, output) {
     
     merged <- merged[,c(healthList), with=FALSE]
     
+    pal1 <- colorQuantile("YlOrRd", NULL)
+    pal2 <- colorQuantile("Blues", NULL)
+    
+    popup_dat <- paste0("<strong>County: </strong>", 
+                        leafmap$NAME,
+                        "<br><strong>",input$censusInfo,"</strong>: ", 
+                        leafmap[[input$censusInfo]],
+                        "<br><strong>",input$healthInfo,"</strong>: ", 
+                        leafmap[[input$healthInfo]])
+    
     leaflet(data = leafmap) %>% addTiles() %>%
-      addPolygons(data = leafmap,
-                  fillColor = ~rainbow_hcl(10), 
+      addPolygons(fillColor = ~pal1(leafmap[[input$censusInfo]]), 
                   fillOpacity = 0.8, 
                   color = "#BDBDC3", 
                   weight = 1,
-                  popup = ~leafmap[[input$censusInfo]]) %>%
+                  popup = ~popup_dat) %>%
       addCircleMarkers(lng = ~centroids[,1],
                        lat = ~centroids[,2],
-                       color = ~diverge_hcl(10),
-                       fillOpacity = 0.5,
-                       popup = ~leafmap[[input$healthInfo]]) 
+                       color = ~pal2(leafmap[[input$healthInfo]]),
+                       fillOpacity = 0.3,
+                       popup = ~popup_dat) 
     #%>%
       #setView(lng, lat)
     
@@ -39,8 +48,3 @@ shinyServer(function(input, output) {
   })
   
 })
-
-dt <- data.table(V1="GEOID")
-
-leafmap[,dt$V1]
-leafmap$`dt$v1`
