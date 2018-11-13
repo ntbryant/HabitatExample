@@ -37,7 +37,13 @@ shinyServer(function(input, output) {
                        lat = ~centroids[,2],
                        color = ~pal2(leafmap[[input$healthInfo]]),
                        fillOpacity = 0.3,
-                       popup = ~popup_dat) 
+                       popup = ~popup_dat) %>%
+      addLegend("bottomright", pal = pal1, values = ~leafmap[[input$censusInfo]],
+                title = input$censusInfo,
+                opacity = 1) %>%
+      addLegend("bottomright", pal = pal2, values = ~leafmap[[input$healthInfo]],
+                title = input$healthInfo,
+                opacity = 1)
     #%>%
       #setView(lng, lat)
     
