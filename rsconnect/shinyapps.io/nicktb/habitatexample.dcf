@@ -1,0 +1,12 @@
+name: habitatexample
+title: HabitatExample
+username:
+account: nicktb
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 567071
+bundleId: 1697312
+url: https://nicktb.shinyapps.io/habitatexample/
+when: 1542072498.16056
+asMultiple: FALSE
+asStatic: FALSE

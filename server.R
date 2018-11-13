@@ -47,7 +47,7 @@ shinyServer(function(input, output) {
       addLegend("bottomright", pal = pal2, values = ~leafmap[[input$healthInfo]],
                 title = input$healthInfo,
                 opacity = 1) %>%
-      setView(centroids[county_index,1], centroids[county_index,2], zoom = 8)
+      setView(centroids[county_index,1], centroids[county_index,2], zoom = 9)
   })
   
   output$dataTable = renderDataTable({
