@@ -15,10 +15,11 @@ shinyServer(function(input, output) {
   
   output$habitatMap = renderLeaflet({
     
-    merged <- merged[,c(healthList), with=FALSE]
-    
     pal1 <- colorQuantile("YlOrRd", NULL)
     pal2 <- colorQuantile("Blues", NULL)
+    
+    county_index <- which(map@data$NAME==input$County)
+    county_index <- county_index[1]
     
     popup_dat <- paste0("<strong>County: </strong>", 
                         leafmap$NAME,
@@ -32,25 +33,25 @@ shinyServer(function(input, output) {
                   fillOpacity = 0.8, 
                   color = "#BDBDC3", 
                   weight = 1,
-                  popup = ~popup_dat) %>%
+                  popup = ~popup_dat,
+                  label = ~NAME) %>%
       addCircleMarkers(lng = ~centroids[,1],
                        lat = ~centroids[,2],
                        color = ~pal2(leafmap[[input$healthInfo]]),
-                       fillOpacity = 0.3,
-                       popup = ~popup_dat) %>%
+                       fillOpacity = 0.4,
+                       popup = ~popup_dat,
+                       label = ~NAME) %>%
       addLegend("bottomright", pal = pal1, values = ~leafmap[[input$censusInfo]],
                 title = input$censusInfo,
                 opacity = 1) %>%
       addLegend("bottomright", pal = pal2, values = ~leafmap[[input$healthInfo]],
                 title = input$healthInfo,
-                opacity = 1)
-    #%>%
-      #setView(lng, lat)
-    
+                opacity = 1) %>%
+      setView(centroids[county_index,1], centroids[county_index,2], zoom = 8)
   })
   
   output$dataTable = renderDataTable({
-    merged
+    merged <- merged[,c("Name", healthList, censusList), with=FALSE]
   })
   
 })

@@ -27,14 +27,14 @@ ui <- dashboardPage(
                        selectInput(inputId = "censusInfo",
                                    "Select Census Info to Display",
                                    choices=censusList,
-                                   selected="`Poverty Estimate, All Ages`")),
+                                   selected="Poverty Percent, All Ages")),
                 column(width = 3,
                        selectInput(inputId = "healthInfo",
                                    "Select Health Info to Display",
                                    choices=healthList,
-                                   selected=healthList[1]))
+                                   selected="% Unemployed"))
               ),
-              tags$style(type = "text/css", "#habitatMap {height: calc(100vh - 200px) !important;}"),
+              tags$style(type = "text/css", "#habitatMap {height: calc(100vh - 170px) !important;}"),
               leafletOutput("habitatMap")
       ),
                 
